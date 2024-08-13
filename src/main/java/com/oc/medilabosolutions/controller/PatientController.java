@@ -1,7 +1,6 @@
 package com.oc.medilabosolutions.controller;
 
 import com.oc.medilabosolutions.model.Patient;
-import com.oc.medilabosolutions.model.enums.Gender;
 import com.oc.medilabosolutions.services.PatientService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
