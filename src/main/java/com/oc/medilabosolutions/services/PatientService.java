@@ -38,13 +38,12 @@ public class PatientService {
     }
 
     public Patient updatePatient(Patient patient, String id) {
-        BigInteger parsedID = new BigInteger(id);
-        Patient existingPatient = patientRepository.findById(parsedID).orElseThrow(() -> new NotFoundException("Patient not found."));
+        Patient existingPatient = patientRepository.findById(new BigInteger(id)).orElseThrow(() -> new NotFoundException("Patient not found."));
 
-        existingPatient.setLastName(patient.getLastName());
-        existingPatient.setFirstName(patient.getFirstName());
-        existingPatient.setPhoneNumber(patient.getPhoneNumber());
-        existingPatient.setPostalAddress(patient.getPostalAddress());
+        existingPatient.setLastName(patient.getLastName() == null ? existingPatient.getLastName() : patient.getLastName());
+        existingPatient.setFirstName(patient.getFirstName() == null ? existingPatient.getFirstName() : patient.getFirstName());
+        existingPatient.setPhoneNumber(patient.getPhoneNumber() == null ? existingPatient.getPhoneNumber() : patient.getPhoneNumber());
+        existingPatient.setPostalAddress(patient.getPostalAddress() == null ? existingPatient.getPostalAddress() : patient.getPostalAddress());
 
         return patientRepository.save(existingPatient);
     }
