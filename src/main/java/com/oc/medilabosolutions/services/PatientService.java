@@ -27,13 +27,6 @@ public class PatientService {
     }
 
     public Patient createPatient(Patient patient) {
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate birthDateParsed = LocalDate.parse(patient.getBirthDate(), formatter);
-            patient.setBirthDate(birthDateParsed.toString());
-        } catch (DateTimeParseException e) {
-            throw new IncorrectFormat("Invalid birth date format. Expected format: YYYY-MM-DD");
-        }
         return patientRepository.save(patient);
     }
 
