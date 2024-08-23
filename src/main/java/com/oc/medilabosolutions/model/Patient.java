@@ -1,5 +1,6 @@
 package com.oc.medilabosolutions.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oc.medilabosolutions.model.enums.Gender;
 import com.oc.medilabosolutions.validators.BirthDate;
 import jakarta.persistence.*;
@@ -10,6 +11,7 @@ import lombok.Setter;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -39,6 +41,9 @@ public class Patient {
     private String postalAddress;
     @Column(name = "phone_number")
     private String phoneNumber;
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Note> notes;
 
     public Patient(String firstName, String lastName, LocalDate birthDate, Gender gender) {
         this.firstName = firstName;
