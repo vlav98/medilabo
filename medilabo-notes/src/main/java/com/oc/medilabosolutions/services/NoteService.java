@@ -1,6 +1,5 @@
 package com.oc.medilabosolutions.services;
 
-import com.oc.medilabosolutions.exceptions.NotFoundException;
 import com.oc.medilabosolutions.model.Note;
 import com.oc.medilabosolutions.repositories.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;

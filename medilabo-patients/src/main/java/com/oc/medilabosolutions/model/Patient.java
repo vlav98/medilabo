@@ -39,14 +39,7 @@ public class Patient {
     private String postalAddress;
     @Column(name = "phone_number")
     private String phoneNumber;
-
-    public Patient(String firstName, String lastName, LocalDate birthDate, Gender gender) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDate = birthDate;
-        this.gender = gender;
-    }
-
+    
     public Patient() {
 
     }

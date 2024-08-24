@@ -1,6 +1,5 @@
 package com.oc.medilabosolutions.services;
 
-import com.oc.medilabosolutions.exceptions.IncorrectFormat;
 import com.oc.medilabosolutions.exceptions.NotFoundException;
 import com.oc.medilabosolutions.model.Patient;
 import com.oc.medilabosolutions.repositories.PatientRepository;
@@ -8,9 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @Service
