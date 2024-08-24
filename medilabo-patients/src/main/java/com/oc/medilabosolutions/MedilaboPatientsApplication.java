@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableJpaRepositories
-public class MedilabosolutionsApplication {
+public class MedilaboPatientsApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MedilabosolutionsApplication.class, args);
+		SpringApplication.run(MedilaboPatientsApplication.class, args);
 	}
 
 }
