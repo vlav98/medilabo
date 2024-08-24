@@ -1,5 +1,4 @@
 DROP TABLE patients CASCADE;
-DROP TABLE notes CASCADE;
 
 CREATE TABLE patients
 (
@@ -11,14 +10,3 @@ CREATE TABLE patients
     postal_address VARCHAR(255) NULL,
     phone_number   VARCHAR(255) NULL
 );
-
-CREATE TABLE notes
-(
-    note_id     BIGINT                NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    content     VARCHAR(255)          NOT NULL,
-    added_at    date                  NOT NULL,
-    patient_id  BIGINT                NOT NULL
-);
-
-ALTER TABLE notes
-    ADD CONSTRAINT FK_NOTES_ON_PATIENT FOREIGN KEY (patient_id) REFERENCES patients (patient_id);
