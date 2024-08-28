@@ -5,21 +5,21 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
+import java.math.BigInteger;
 import java.util.List;
 
-@FeignClient(name = "medilabo-patient", url = "localhost:8080")
+@FeignClient(name = "medilabo-patient", url = "localhost:8080/patients")
 public interface PatientProxy {
-    @GetMapping("/patients")
-    public List<Patient> getAllPatients();
+    @GetMapping()
+    List<Patient> getAllPatients();
 
-    @GetMapping("/patients/{id}")
-    public Patient getPatientById(@PathVariable int id);
+    @GetMapping("/{id}")
+    Patient getPatientById(@PathVariable BigInteger id);
 
-    @PostMapping("/patients")
-    public Patient createNewPatient(Patient patient);
+    @PostMapping()
+    Patient createNewPatient(Patient patient);
 
-    @PostMapping("/patients/{id}")
-    public Patient updatePatient(@PathVariable int id, Patient patient);
+    @PostMapping("/{id}")
+    Patient updatePatient(@PathVariable BigInteger id, Patient patient);
 }

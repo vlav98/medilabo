@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="notes" th:with="notes=${notes}">
+    <h3 class="mb-3 pt-3 border-top" th:text="#{notes.past_notes}"></h3>
+    <div class="container-fluid" th:each="note: ${notes}">
+        <div class="card">
+            <div class="card-body" th:text="${note.content}">
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="card">
+            <form method="post"
+                  th:action="@{/notes/add}"
+                  th:object="${newNote}"
+                  class="form-horizontal d-flex">
+                <input type="hidden" th:field="*{patientId}" />
+                <input type="hidden" th:field="*{patient}" />
+                <label for="note-content"></label>
+                <input class="card-body flex-grow-1 rounded-1 m-2" id="note-content" th:field="*{content}" required />
+                <button type="submit" class="btn btn-primary m-2" th:text="#{notes.add_note}"></button>
+            </form>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>
