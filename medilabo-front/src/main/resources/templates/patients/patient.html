@@ -34,8 +34,9 @@
                 <div class="col">
                     <div class="form-group mb-3">
                         <label for="birthday" th:text="#{patient.birth_date}"></label>
-                        <input type="date" class="form-control"
-                               id="birthday" name="birthday" th:field="*{birthDate}" disabled required>
+                        <input class="form-control"
+                               id="birthday" name="birthday" th:field="*{birthDate}"
+                               format="dd/MM/yyyy" disabled required>
                     </div>
                     <div class="form-group mb-3">
                         <label for="gender" th:text="#{patient.gender}"></label>

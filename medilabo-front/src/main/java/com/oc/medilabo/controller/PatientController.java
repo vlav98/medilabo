@@ -52,7 +52,7 @@ public class PatientController {
     @PostMapping("/patients/add")
     public String addNewPatient(Patient patient){
         patientProxy.createNewPatient(patient);
-        return "patients/index";
+        return "redirect:/patients/index";
     }
 
     @GetMapping("/patients/update/{id}")
