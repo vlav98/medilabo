@@ -9,5 +9,7 @@ import java.util.List;
 
 @Repository
 public interface NoteRepository extends MongoRepository<Note, BigInteger> {
+    List<Note> findAllByPatientIdOrderByCreatedAt(BigInteger patientId);
+
     public List<Note> findNotesByPatientIdOrderByCreatedAt(BigInteger patient);
 }

@@ -18,8 +18,8 @@ public class NoteService {
         return noteRepository.findAll();
     }
 
-    public List<Note> getNoteHistoryByPatient(BigInteger patient) {
-        return noteRepository.findNotesByPatientIdOrderByCreatedAt(patient);
+    public List<Note> getNoteHistoryByPatient(BigInteger patientId) {
+        return noteRepository.findAllByPatientIdOrderByCreatedAt(patientId);
     }
 
     public Note addNewNote(Note note) {
