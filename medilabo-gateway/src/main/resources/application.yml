@@ -1,0 +1,12 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: patient
+          uri: http://medilabo-patients:8080
+          predicates:
+            - Path=/medilabo-patients
+        - id: note
+          uri: http://medilabo-notes:8081
+          predicates:
+            - Path=/medilabo-notes

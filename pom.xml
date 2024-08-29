@@ -20,6 +20,7 @@
     <module>medilabo-patients</module>
     <module>medilabo-notes</module>
     <module>medilabo-front</module>
+    <module>medilabo-gateway</module>
   </modules>
   	
   <dependencyManagement>
