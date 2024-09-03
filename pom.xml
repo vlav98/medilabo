@@ -21,6 +21,7 @@
     <module>medilabo-notes</module>
     <module>medilabo-front</module>
     <module>medilabo-gateway</module>
+    <module>medilabo-risk-report</module>
   </modules>
   	
   <dependencyManagement>

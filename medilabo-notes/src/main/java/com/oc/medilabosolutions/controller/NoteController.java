@@ -38,4 +38,8 @@ public class NoteController {
         return new ResponseEntity<>(noteService.addNewNote(note), HttpStatus.CREATED);
     }
 
+    @GetMapping("/{id}/symptoms")
+    public List<String> getSymptomsFromPatientsNotes(@PathVariable("id") BigInteger id) {
+        return noteService.getSymptomsFromPatientsNotes(id);
+    }
 }
