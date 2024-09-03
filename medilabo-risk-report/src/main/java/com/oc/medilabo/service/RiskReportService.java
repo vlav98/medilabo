@@ -36,15 +36,26 @@ public class RiskReportService {
 
         if (numberOfSymptoms < 2) {
             return RiskLevel.None;
-        } else if (age >= 30 && numberOfSymptoms <= 5) {
-            return RiskLevel.Borderline;
-        } else if (age < 30) {
-            if (gender.equals(Gender.M) && numberOfSymptoms == 3) {
+        } else if (age >= 30) {
+            if (numberOfSymptoms <= 5) {
+                return RiskLevel.Borderline;
+            } else if (numberOfSymptoms <= 7) {
                 return RiskLevel.In_Danger;
-            } else if ((gender.equals(Gender.M) && numberOfSymptoms >= 5) || (gender.equals(Gender.F) && numberOfSymptoms >= 7)) {
+            }
+        } else {
+            if (
+                (gender.equals(Gender.M) && numberOfSymptoms == 3) ||
+                    (gender.equals(Gender.F) && numberOfSymptoms == 4)
+            ) {
+                return RiskLevel.In_Danger;
+            } else if (
+                (gender.equals(Gender.M) && numberOfSymptoms >= 5) ||
+                    (gender.equals(Gender.F) && numberOfSymptoms >= 7)
+            ) {
                 return RiskLevel.Early_Onset;
             }
-        } else if (numberOfSymptoms >= 8) {
+        }
+        if (numberOfSymptoms >= 8) {
             return RiskLevel.Early_Onset;
         }
 
