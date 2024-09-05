@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="Patients"></title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <h1>Patients</h1>
+    <div class="container-fluid">
+        <div class="row mb-3">
+            <div class="col">
+                <h4 th:text="#{patient.table_headline}"></h4>
+            </div>
+            <div class="col d-flex justify-content-end">
+                <a type="button" class="btn btn-primary text-white"
+                   th:href="@{/patients/add}"
+                   th:text="#{patient.add_patient}"></a>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th th:text="#{patient.name}"></th>
+                <th th:text="#{patient.birth_date}"></th>
+                <th th:text="#{patient.gender}"></th>
+                <td th:text="#{patient.postal_address}"></td>
+                <td th:text="#{patient.phone_number}"></td>
+                <td></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="patient: ${patients}">
+                <td th:text="${#strings.concat(patient.firstName, ' ', patient.lastName)}"></td>
+                <td th:text="${patient.birthDate}"></td>
+                <td th:text="${patient.gender}"></td>
+                <td th:text="${patient.postalAddress}"></td>
+                <td th:text="${patient.phoneNumber}"></td>
+                <td>
+                    <a th:href="@{/patients/{patientId}(patientId=${patient.patientId})}"><i class="far fa-eye"></i></a>
+                    <a th:href="@{/patients/update/{patientId}(patientId=${patient.patientId})}"><i class="fas fa-edit"></i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
