@@ -20,6 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
@@ -32,8 +33,8 @@ public class RiskReportServiceTests {
     @MockBean
     private PatientProxy patientProxy;
 
-    private ArrayList<String> setSymptoms(int nbOfSymptoms) {
-        ArrayList<String> symptomsList = new ArrayList<>();
+    private List<String> generateSymptoms(int nbOfSymptoms) {
+        List<String> symptomsList = new ArrayList<>();
         for (int i = 0; i < nbOfSymptoms; i++) {
             symptomsList.add("Symptom" + i);
         }
@@ -71,7 +72,7 @@ public class RiskReportServiceTests {
         Patient patient = new Patient();
         patient.setGender(Gender.M);
         Mockito.when(patientProxy.fetchPatientWithPatientId(id)).thenReturn(Optional.of(patient));
-        Mockito.when(noteProxy.fetchSymptoms(id)).thenReturn(setSymptoms(1));
+        Mockito.when(noteProxy.fetchSymptoms(id)).thenReturn(generateSymptoms(1));
 
         assertEquals(RiskLevel.None, riskReportService.getRiskLevel(id));
     }
@@ -83,7 +84,7 @@ public class RiskReportServiceTests {
         patient.setBirthDate(LocalDate.of(1980, 1,1));
         patient.setGender(Gender.M);
         Mockito.when(patientProxy.fetchPatientWithPatientId(id)).thenReturn(Optional.of(patient));
-        Mockito.when(noteProxy.fetchSymptoms(id)).thenReturn(setSymptoms(2));
+        Mockito.when(noteProxy.fetchSymptoms(id)).thenReturn(generateSymptoms(2));
 
         assertEquals(RiskLevel.Borderline, riskReportService.getRiskLevel(id));
     }
@@ -95,7 +96,7 @@ public class RiskReportServiceTests {
         patient.setBirthDate(LocalDate.of(1980, 1,1));
         patient.setGender(Gender.M);
         Mockito.when(patientProxy.fetchPatientWithPatientId(id)).thenReturn(Optional.of(patient));
-        Mockito.when(noteProxy.fetchSymptoms(id)).thenReturn(setSymptoms(2));
+        Mockito.when(noteProxy.fetchSymptoms(id)).thenReturn(generateSymptoms(2));
 
         assertEquals(RiskLevel.Borderline, riskReportService.getRiskLevel(id));
     }
@@ -107,7 +108,7 @@ public class RiskReportServiceTests {
         patient.setBirthDate(LocalDate.of(2000, 1,1));
         patient.setGender(Gender.M);
         Mockito.when(patientProxy.fetchPatientWithPatientId(id)).thenReturn(Optional.of(patient));
-        Mockito.when(noteProxy.fetchSymptoms(id)).thenReturn(setSymptoms(3));
+        Mockito.when(noteProxy.fetchSymptoms(id)).thenReturn(generateSymptoms(3));
 
         assertEquals(RiskLevel.In_Danger, riskReportService.getRiskLevel(id));
     }
@@ -119,7 +120,7 @@ public class RiskReportServiceTests {
         patient.setBirthDate(LocalDate.of(2000, 1,1));
         patient.setGender(Gender.F);
         Mockito.when(patientProxy.fetchPatientWithPatientId(id)).thenReturn(Optional.of(patient));
-        Mockito.when(noteProxy.fetchSymptoms(id)).thenReturn(setSymptoms(4));
+        Mockito.when(noteProxy.fetchSymptoms(id)).thenReturn(generateSymptoms(4));
 
         assertEquals(RiskLevel.In_Danger, riskReportService.getRiskLevel(id));
     }
@@ -131,7 +132,7 @@ public class RiskReportServiceTests {
         patient.setBirthDate(LocalDate.of(1980, 1,1));
         patient.setGender(Gender.M);
         Mockito.when(patientProxy.fetchPatientWithPatientId(id)).thenReturn(Optional.of(patient));
-        Mockito.when(noteProxy.fetchSymptoms(id)).thenReturn(setSymptoms(6));
+        Mockito.when(noteProxy.fetchSymptoms(id)).thenReturn(generateSymptoms(6));
 
         assertEquals(RiskLevel.In_Danger, riskReportService.getRiskLevel(id));
     }
@@ -143,7 +144,7 @@ public class RiskReportServiceTests {
         patient.setBirthDate(LocalDate.of(1980, 1,1));
         patient.setGender(Gender.F);
         Mockito.when(patientProxy.fetchPatientWithPatientId(id)).thenReturn(Optional.of(patient));
-        Mockito.when(noteProxy.fetchSymptoms(id)).thenReturn(setSymptoms(7));
+        Mockito.when(noteProxy.fetchSymptoms(id)).thenReturn(generateSymptoms(7));
 
         assertEquals(RiskLevel.In_Danger, riskReportService.getRiskLevel(id));
     }
@@ -155,7 +156,7 @@ public class RiskReportServiceTests {
         patient.setBirthDate(LocalDate.of(2000, 1,1));
         patient.setGender(Gender.M);
         Mockito.when(patientProxy.fetchPatientWithPatientId(id)).thenReturn(Optional.of(patient));
-        Mockito.when(noteProxy.fetchSymptoms(id)).thenReturn(setSymptoms(5));
+        Mockito.when(noteProxy.fetchSymptoms(id)).thenReturn(generateSymptoms(5));
 
         assertEquals(RiskLevel.Early_Onset, riskReportService.getRiskLevel(id));
     }
@@ -167,7 +168,7 @@ public class RiskReportServiceTests {
         patient.setBirthDate(LocalDate.of(2000, 1,1));
         patient.setGender(Gender.F);
         Mockito.when(patientProxy.fetchPatientWithPatientId(id)).thenReturn(Optional.of(patient));
-        Mockito.when(noteProxy.fetchSymptoms(id)).thenReturn(setSymptoms(7));
+        Mockito.when(noteProxy.fetchSymptoms(id)).thenReturn(generateSymptoms(7));
 
         assertEquals(RiskLevel.Early_Onset, riskReportService.getRiskLevel(id));
     }
@@ -179,7 +180,7 @@ public class RiskReportServiceTests {
         patient.setBirthDate(LocalDate.of(1980, 1,1));
         patient.setGender(Gender.F);
         Mockito.when(patientProxy.fetchPatientWithPatientId(id)).thenReturn(Optional.of(patient));
-        Mockito.when(noteProxy.fetchSymptoms(id)).thenReturn(setSymptoms(8));
+        Mockito.when(noteProxy.fetchSymptoms(id)).thenReturn(generateSymptoms(8));
 
         assertEquals(RiskLevel.Early_Onset, riskReportService.getRiskLevel(id));
     }

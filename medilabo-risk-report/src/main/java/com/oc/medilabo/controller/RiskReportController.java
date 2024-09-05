@@ -14,7 +14,7 @@ import java.math.BigInteger;
 @RequestMapping("/risk-report")
 public class RiskReportController {
     @Autowired
-    RiskReportService riskReportService;
+    private RiskReportService riskReportService;
 
     @GetMapping("/{id}")
     public RiskLevel getRiskReport(@PathVariable("id") BigInteger id) {
