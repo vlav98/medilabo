@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @RestController
@@ -34,12 +35,12 @@ public class PatientController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Patient> getPatientById(@PathVariable String id) {
+    public ResponseEntity<Patient> getPatientById(@PathVariable BigInteger id) {
         return ResponseEntity.ok(patientService.findById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Patient> updatePatient(@PathVariable String id, @RequestBody Patient patient) {
+    public ResponseEntity<Patient> updatePatient(@PathVariable BigInteger id, @RequestBody Patient patient) {
         return ResponseEntity.ok(patientService.updatePatient(patient, id));
     }
 

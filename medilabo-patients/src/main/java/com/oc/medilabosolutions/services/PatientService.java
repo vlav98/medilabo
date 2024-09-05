@@ -18,16 +18,16 @@ public class PatientService {
         return patientRepository.findAll();
     }
 
-    public Patient findById(String id) {
-        return patientRepository.findById(new BigInteger(id)).orElseThrow(() -> new NotFoundException("Patient doesn't exist"));
+    public Patient findById(BigInteger id) {
+        return patientRepository.findById(id).orElseThrow(() -> new NotFoundException("Patient doesn't exist"));
     }
 
     public Patient createPatient(Patient patient) {
         return patientRepository.save(patient);
     }
 
-    public Patient updatePatient(Patient patient, String id) {
-        Patient existingPatient = patientRepository.findById(new BigInteger(id)).orElseThrow(() -> new NotFoundException("Patient not found."));
+    public Patient updatePatient(Patient patient, BigInteger id) {
+        Patient existingPatient = patientRepository.findById(id).orElseThrow(() -> new NotFoundException("Patient not found."));
 
         existingPatient.setLastName(patient.getLastName() == null ? existingPatient.getLastName() : patient.getLastName());
         existingPatient.setFirstName(patient.getFirstName() == null ? existingPatient.getFirstName() : patient.getFirstName());

@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: medilabo-front
+server:
+  port: 8082
