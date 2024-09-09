@@ -2,8 +2,10 @@ package com.oc.medilabo.controller;
 
 import com.oc.medilabo.bean.Note;
 import com.oc.medilabo.bean.Patient;
+import com.oc.medilabo.bean.enums.RiskLevel;
 import com.oc.medilabo.proxy.NoteProxy;
 import com.oc.medilabo.proxy.PatientProxy;
+import com.oc.medilabo.proxy.RiskReportProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,8 @@ public class PatientController {
     public PatientProxy patientProxy;
     @Autowired
     public NoteProxy noteProxy;
+    @Autowired
+    public RiskReportProxy riskReportProxy;
 
     @GetMapping("/patients")
     public String getAllPatients(Model model) {
@@ -33,8 +37,10 @@ public class PatientController {
     public String getPatientInformation(Model model, @PathVariable("id") BigInteger id){
         Patient patient = patientProxy.getPatientById(id);
         List<Note> notes = noteProxy.getNotesByPatientId(id);
+        RiskLevel patientRiskLevel = riskReportProxy.getPatientRiskLevel(id);
         model.addAttribute("patient", patient);
         model.addAttribute("notes", notes);
+        model.addAttribute("patientRiskLevel", patientRiskLevel);
         Note newNote = new Note();
         newNote.setPatientId(id);
         newNote.setPatient(patient.getLastName());

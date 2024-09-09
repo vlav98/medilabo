@@ -15,7 +15,7 @@
 
     <div class="card">
         <div class="card-body">
-            <h4 class="mb-3" th:text="#{patient.update_patient}"></h4>
+            <h3 class="mb-3" th:text="#{patient.update_patient_title}"></h3>
             <form method="post"
                   th:action="@{/patient/update/{id}(id=${patient.patientId})}"
                   th:object="${patient}"
@@ -70,7 +70,7 @@
                 </div>
                 <div class="row justify-content-center m-2">
                     <div class="col">
-                        <button type="submit" class="btn btn-primary" th:text="#{patient.update_patient}"></button>
+                        <button type="submit" class="btn btn-primary" th:text="#{patient.update_patient_button}"></button>
                     </div>
                     <div class="col d-flex justify-content-end">
                         <a type="button" class="btn btn-secondary text-white"

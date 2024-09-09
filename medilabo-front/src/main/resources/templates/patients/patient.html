@@ -9,45 +9,64 @@
 </head>
 <body>
 <div class="align-items-center container p-5 rounded" layout:fragment="content" th:remove="tag">
-    <div class="">
-        <div th:if="${error != null}" class="alert alert-danger" role="alert" th:text="${error}"></div>
-    </div>
+    <div th:if="${error != null}" class="alert alert-danger" role="alert" th:text="${error}"></div>
 
     <div class="card">
         <div class="card-body">
-            <h4 class="mb-3" th:text="#{patient.update_patient}"></h4>
-            <div th:object="${patient}"
-                  class="form-horizontal mb-5">
+            <div class="row justify-content-center d-flex">
+                <div class="col-8 align-self-center">
+                    <h3 class="mb-3"
+                        th:text="#{patient.update_patient_title(${#strings.concat(patient.firstName, ' ', patient.lastName)})}"></h3>
+                </div>
+                <div class="col d-flex justify-content-end align-self-center">
+                    <ul th:text="#{riskLevel.patient_info}" class="align-text-center px-2"></ul>
+                    <ul class="list-inline">
+                        <li th:if="${patientRiskLevel.toString() == 'None'}">
+                            <div class="badge text-bg-success" th:text="#{riskLevel.none}"></div>
+                        </li>
+                        <li th:if="${patientRiskLevel.toString() == 'Borderline'}">
+                            <div class="badge text-bg-warning" th:text="#{riskLevel.borderline}"></div>
+                        </li>
+                        <li th:if="${patientRiskLevel.toString() == 'In_Danger'}">
+                            <div class="badge text-bg-danger" th:text="#{riskLevel.in_danger}"></div>
+                        </li>
+                        <li th:if="${patientRiskLevel.toString() == 'Early_Onset'}">
+                            <div class="badge text-bg-info" th:text="#{riskLevel.early_onset}"></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div th:object="${patient}" class="form-horizontal mb-5">
                 <div class="row">
-                <div class="col">
-                    <div class="form-group mb-3">
-                        <label for="lastName" th:text="#{patient.last_name}"></label>
-                        <input class="form-control"
-                               id="lastName" name="lastname" th:field="*{lastName}" disabled required>
+                    <div class="col">
+                        <div class="form-group mb-3">
+                            <label for="lastName" th:text="#{patient.last_name}"></label>
+                            <input class="form-control"
+                                   id="lastName" name="lastname" th:field="*{lastName}" disabled required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="firstName" th:text="#{patient.first_name}"></label>
+                            <input class="form-control"
+                                   id="firstName" name="firstname" th:field="*{firstName}" disabled required>
+                        </div>
                     </div>
-                    <div class="form-group mb-3">
-                        <label for="firstName" th:text="#{patient.first_name}"></label>
-                        <input class="form-control"
-                               id="firstName" name="firstname" th:field="*{firstName}" disabled required>
+                    <div class="col">
+                        <div class="form-group mb-3">
+                            <label for="birthday" th:text="#{patient.birth_date}"></label>
+                            <input class="form-control"
+                                   id="birthday" name="birthday" th:field="*{birthDate}"
+                                   format="dd/MM/yyyy" disabled required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="gender" th:text="#{patient.gender}"></label>
+                            <select class="form-select"
+                                    id="gender" name="gender" th:field="*{gender}" disabled required>
+                                <option th:each="gender : ${T(com.oc.medilabo.bean.enums.Gender).values()}"
+                                        th:value="${gender.name()}"
+                                        th:text="${gender.name()}"></option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="col">
-                    <div class="form-group mb-3">
-                        <label for="birthday" th:text="#{patient.birth_date}"></label>
-                        <input class="form-control"
-                               id="birthday" name="birthday" th:field="*{birthDate}"
-                               format="dd/MM/yyyy" disabled required>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="gender" th:text="#{patient.gender}"></label>
-                        <select class="form-select"
-                                id="gender" name="gender" th:field="*{gender}" disabled required>
-                            <option th:each="gender : ${T(com.oc.medilabo.bean.enums.Gender).values()}"
-                                    th:value="${gender.name()}"
-                                    th:text="${gender.name()}"></option>
-                        </select>
-                    </div>
-                </div>
                 </div>
                 <div class="form-group mb-3">
                     <label for="postalAddress" th:text="#{patient.postal_address}"></label>
@@ -68,7 +87,7 @@
                         <a type="button"
                             class="btn btn-primary"
                             th:href="@{/patients/update/{patientId}(patientId=${patient.patientId})}"
-                            th:text="#{patient.update_patient}"></a>
+                            th:text="#{patient.update_patient_button}"></a>
                     </div>
                     <div class="col d-flex justify-content-end">
                         <a type="button" class="btn btn-secondary text-white"

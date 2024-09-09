@@ -19,8 +19,8 @@
                 <input type="hidden" th:field="*{patientId}" />
                 <input type="hidden" th:field="*{patient}" />
                 <label for="note-content"></label>
-                <input class="card-body flex-grow-1 rounded-1 m-2" id="note-content" th:field="*{content}" required />
-                <button type="submit" class="btn btn-primary m-2" th:text="#{notes.add_note}"></button>
+                <input class="card-body form-control" id="note-content" th:field="*{content}" required />
+                <button type="submit" class="btn btn-primary m-2 col-2" th:text="#{notes.add_note}"></button>
             </form>
         </div>
     </div>
