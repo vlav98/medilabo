@@ -1,0 +1,96 @@
+services:
+  medilabo-patients:
+    build: ./medilabo-patients
+    container_name: patients
+    ports:
+      - '8090:8090'
+    depends_on:
+      - mysqldb
+    environment:
+      - "SPRING_DATASOURCE_URL=${MYSQL_DATASOURCE_URL}"
+      - "SPRING_DATASOURCE_USERNAME=${MYSQL_DATASOURCE_USERNAME}"
+      - "SPRING_DATASOURCE_PASSWORD=${MYSQL_DATASOURCE_PASSWORD}"
+    volumes:
+      - patient-data:/data/db
+    restart: on-failure
+
+  medilabo-notes:
+    build: ./medilabo-notes
+    container_name: notes
+    ports:
+      - '8091:8091'
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      - "SPRING_DATA_MONGODB_DATABASE=medilabo"
+      - "SPRING_DATA_MONGODB_PORT=27017"
+      - "SPRING_DATASOURCE_URL=${MONGO_DATASOURCE_URL}"
+    volumes:
+      - note-data:/data/db
+    restart: on-failure
+
+  medilabo-risk-report:
+    build: ./medilabo-risk-report
+    container_name: risk-report
+    ports:
+      - '8094:8094'
+    depends_on:
+      medilabo-patients:
+        condition: service_started
+      medilabo-notes:
+        condition: service_started
+    networks:
+      - medilabo-app
+    restart: on-failure
+
+  medilabo-gateway:
+    build: medilabo-gateway
+    container_name: gateway-service
+    ports:
+      - "8761:8761"
+    networks:
+      - medilabo-app
+    restart: on-failure
+
+  medilabo-front:
+    build: medilabo-front
+    container_name: front
+    ports:
+      - '8082:8082'
+    networks:
+      - medilabo-app
+    restart: on-failure
+
+  mongodb:
+    image: 'mongo:latest'
+    container_name: mongodb
+    ports:
+      - '27017:27017'
+    networks:
+      - medilabo-app
+    healthcheck:
+      test: "mongosh --eval 'db.runCommand(\"ping\").ok' localhost:27017 --quiet || exit 1"
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+
+  mysqldb:
+    image: 'mysql:8.0.32'
+    container_name: 'mysqldb'
+    environment:
+      - 'MYSQL_ROOT_PASSWORD=${MYSQL_DATASOURCE_PASSWORD}'
+      - 'MYSQL_DATABASE=medilabo'
+    ports:
+      - "3307:3306"
+    networks:
+      - medilabo-app
+
+networks:
+  medilabo-app:
+volumes:
+  mongo-data:
+  mysql-data:
+  note-data:
+  patient-data:

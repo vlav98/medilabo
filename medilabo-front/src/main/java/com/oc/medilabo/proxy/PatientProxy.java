@@ -10,6 +10,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 @FeignClient(name = "medilabo-patient", url = "localhost:8080/patients")
+//@FeignClient(name = "medilabo-patient", url = "http://gateway-service:8761/patients")
 public interface PatientProxy {
     @GetMapping()
     List<Patient> getAllPatients();

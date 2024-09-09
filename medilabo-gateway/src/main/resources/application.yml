@@ -22,10 +22,6 @@ spring:
           uri: http://medilabo-risk-report:8094
           predicates:
             - Path=/medilabo-risk-report
-        - id: front
-          uri: http://medilabo-front:8093
-          predicates:
-            - Path=/medilabo-front
 eureka:
   instance:
     hostname: localhost
