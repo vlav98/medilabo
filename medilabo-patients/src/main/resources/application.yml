@@ -1,5 +1,13 @@
 spring:
   application:
-    name: medilabo-patients
+    name: patients
 server:
-  port: 8080
+  port: 8761
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/

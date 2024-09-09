@@ -1,5 +1,13 @@
 spring:
   application:
-    name: medilabo-notes
+    name: notes
 server:
-  port: 8081
+  port: 8761
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/

@@ -1,7 +1,15 @@
 spring:
   application:
-    name: medilabo-front
+    name: front
 server:
-  port: 8082
+  port: 8761
 gateway:
   url: http://localhost:8761
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/

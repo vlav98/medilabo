@@ -1,74 +1,11 @@
 services:
-  medilabo-patients:
-    build: ./medilabo-patients
-    container_name: patients
-    ports:
-      - '8090:8090'
-    depends_on:
-      - mysqldb
-    environment:
-      - "SPRING_DATASOURCE_URL=${MYSQL_DATASOURCE_URL}"
-      - "SPRING_DATASOURCE_USERNAME=${MYSQL_DATASOURCE_USERNAME}"
-      - "SPRING_DATASOURCE_PASSWORD=${MYSQL_DATASOURCE_PASSWORD}"
-    volumes:
-      - patient-data:/data/db
-    restart: on-failure
-
-  medilabo-notes:
-    build: ./medilabo-notes
-    container_name: notes
-    ports:
-      - '8091:8091'
-    depends_on:
-      mongodb:
-        condition: service_healthy
-    environment:
-      - "SPRING_DATA_MONGODB_DATABASE=medilabo"
-      - "SPRING_DATA_MONGODB_PORT=27017"
-      - "SPRING_DATASOURCE_URL=${MONGO_DATASOURCE_URL}"
-    volumes:
-      - note-data:/data/db
-    restart: on-failure
-
-  medilabo-risk-report:
-    build: ./medilabo-risk-report
-    container_name: risk-report
-    ports:
-      - '8094:8094'
-    depends_on:
-      medilabo-patients:
-        condition: service_started
-      medilabo-notes:
-        condition: service_started
-    networks:
-      - medilabo-app
-    restart: on-failure
-
-  medilabo-gateway:
-    build: medilabo-gateway
-    container_name: gateway-service
-    ports:
-      - "8761:8761"
-    networks:
-      - medilabo-app
-    restart: on-failure
-
-  medilabo-front:
-    build: medilabo-front
-    container_name: front
-    ports:
-      - '8082:8082'
-    networks:
-      - medilabo-app
-    restart: on-failure
-
   mongodb:
-    image: 'mongo:latest'
+    image: mongo:latest
     container_name: mongodb
     ports:
       - '27017:27017'
     networks:
-      - medilabo-app
+      - app
     healthcheck:
       test: "mongosh --eval 'db.runCommand(\"ping\").ok' localhost:27017 --quiet || exit 1"
       interval: 10s
@@ -77,18 +14,109 @@ services:
       start_period: 10s
 
   mysqldb:
-    image: 'mysql:8.0.32'
-    container_name: 'mysqldb'
+    image: mysql:8.0.32
+    container_name: mysqldb
+    env_file: ./.env
     environment:
-      - 'MYSQL_ROOT_PASSWORD=${MYSQL_DATASOURCE_PASSWORD}'
-      - 'MYSQL_DATABASE=medilabo'
+      - MYSQL_ROOT_PASSWORD=${MYSQL_DATASOURCE_PASSWORD}
+      - MYSQL_DATABASE=medilabo
+      - MYSQL_PASSWORD=${MYSQL_DATASOURCE_PASSWORD}
     ports:
       - "3307:3306"
+    volumes:
+      - patient-data:/var/lib/mysql
     networks:
-      - medilabo-app
+      - app
+
+  gateway:
+    build:
+      context: ./medilabo-gateway
+      dockerfile: Dockerfile
+    container_name: gateway-service
+    ports:
+      - "8761:8761"
+    networks:
+      - app
+    restart: on-failure
+
+  patients:
+    build:
+      context: ./medilabo-patients
+      dockerfile: Dockerfile
+    container_name: patients
+    ports:
+      - '8090:8090'
+    env_file: ./.env
+    environment:
+      - SPRING_DATASOURCE_URL=${MYSQL_DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_DATASOURCE_PASSWORD}
+      - eureka.client.service-url.defaultZone=http://gateway-service:8761/eureka
+    depends_on:
+      mysqldb:
+        condition: service_started
+      gateway:
+        condition: service_started
+    volumes:
+      - patient-data:/var/lib/mysql
+    networks:
+      - app
+    restart: on-failure
+
+  notes:
+    build: ./medilabo-notes
+    container_name: notes
+    ports:
+      - '8091:8091'
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      gateway:
+        condition: service_started
+    environment:
+      - "SPRING_DATA_MONGODB_DATABASE=medilabo"
+      - "SPRING_DATA_MONGODB_PORT=27017"
+      - "SPRING_DATASOURCE_URL=${MONGO_DATASOURCE_URL}"
+      - eureka.client.service-url.defaultZone=http://gateway-service:8761/eureka
+    volumes:
+      - note-data:/data/db
+    networks:
+      - app
+    restart: on-failure
+
+  risk-report:
+    build: ./medilabo-risk-report
+    container_name: risk-report
+    ports:
+      - '8094:8094'
+    environment:
+      - eureka.client.service-url.defaultZone=http://gateway-service:8761/eureka
+    depends_on:
+      patients:
+        condition: service_started
+      notes:
+        condition: service_started
+      gateway:
+        condition: service_started
+    networks:
+      - app
+    restart: on-failure
+
+  front:
+    build: ./medilabo-front
+    container_name: front
+    environment:
+      - eureka.client.service-url.defaultZone=http://gateway-service:8761/eureka
+    ports:
+      - '8082:8082'
+    depends_on:
+      - gateway
+    networks:
+      - app
+    restart: on-failure
 
 networks:
-  medilabo-app:
+  app:
 volumes:
   mongo-data:
   mysql-data:

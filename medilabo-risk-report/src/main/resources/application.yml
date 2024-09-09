@@ -1,5 +1,13 @@
 spring:
   application:
-    name: medilabo-risk-report
+    name: risk-report
 server:
-  port: 8084
+  port: 8761
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
