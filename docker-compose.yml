@@ -1,3 +1,9 @@
+volumes:
+  mongo-data:
+  mysql-data:
+  note-data:
+  patient-data:
+
 services:
   mongodb:
     image: mongo:latest
@@ -6,6 +12,8 @@ services:
       - '27017:27017'
     networks:
       - app
+    volumes:
+      - note-data:/data/db
     healthcheck:
       test: "mongosh --eval 'db.runCommand(\"ping\").ok' localhost:27017 --quiet || exit 1"
       interval: 10s
@@ -15,16 +23,19 @@ services:
 
   mysqldb:
     image: mysql:8.0.32
+    restart: always
     container_name: mysqldb
     env_file: ./.env
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_DATASOURCE_PASSWORD}
       - MYSQL_DATABASE=medilabo
+      - MYSQL_ROOT_PASSWORD=${MYSQL_DATASOURCE_PASSWORD}
+      - MYSQL_USER=root
       - MYSQL_PASSWORD=${MYSQL_DATASOURCE_PASSWORD}
     ports:
-      - "3307:3306"
+      - 3307:3306
     volumes:
       - patient-data:/var/lib/mysql
+      - ./mysql:/docker-entrypoint-initdb.d
     networks:
       - app
 
@@ -117,8 +128,3 @@ services:
 
 networks:
   app:
-volumes:
-  mongo-data:
-  mysql-data:
-  note-data:
-  patient-data:
