@@ -2,12 +2,13 @@ spring:
   application:
     name: patients
 server:
-  port: 8761
+  port: 8090
 eureka:
   instance:
     hostname: localhost
+    instance-id: ${spring.application.name}
   client:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      defaultZone: http://${eureka.instance.hostname}:8761/eureka
