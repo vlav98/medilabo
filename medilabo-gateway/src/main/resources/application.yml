@@ -20,7 +20,7 @@ spring:
             - Path=/medilabo-risk-report/**
 eureka:
   instance:
-    hostname: 172.18.0.3
+    hostname: localhost
     lease-expiration-duration-in-seconds: 15
     lease-renewal-interval-in-seconds: 5
   server:
