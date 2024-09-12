@@ -9,18 +9,23 @@ spring:
         - id: patients
           uri: http://patients:8090
           predicates:
-            - Path=/medilabo-patients
+            - Path=/medilabo-patients/**
         - id: notes
           uri: http://notes:8091
           predicates:
-            - Path=/medilabo-notes
+            - Path=/medilabo-notes/**
         - id: risk-report
           uri: http://risk-report:8094
           predicates:
-            - Path=/medilabo-risk-report
+            - Path=/medilabo-risk-report/**
 eureka:
   instance:
     hostname: 172.18.0.3
+    lease-expiration-duration-in-seconds: 15
+    lease-renewal-interval-in-seconds: 5
+  server:
+    enable-self-preservation: false
+    waitTimeInMsWhenSyncEmpty: 0
   client:
     registerWithEureka: false
     fetchRegistry: false

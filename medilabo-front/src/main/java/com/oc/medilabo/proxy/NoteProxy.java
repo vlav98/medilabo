@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.math.BigInteger;
 import java.util.List;
 
-@FeignClient(name = "medilabo-notes")
-//@FeignClient(name = "medilabo-notes", url = "http://localhost:8081/notes")
-//@FeignClient(name = "medilabo-notes", url = "http://medilabo-notes:8081/notes")
+@FeignClient(name = "notes", url = "${gateway.url}" + "/notes")
 public interface NoteProxy {
     @GetMapping("/all")
     List<Note> getAllNotes();

@@ -1,7 +1,8 @@
-FROM maven:3.8.7-openjdk-18-slim
+FROM maven:3.8.7-openjdk-18-slim as build
 RUN mvn package -DskipTests
 
 FROM openjdk:21
 VOLUME /tmp
-ADD target/medilabo-front-0.0.1-SNAPSHOT.jar medilabo-front.jar
-ENTRYPOINT ["java","-jar","/medilabo-front.jar"]
+COPY target/medilabo-front-0.0.1-SNAPSHOT.jar medilabo-front.jar
+EXPOSE 8082
+CMD ["java","-jar","/medilabo-front.jar"]

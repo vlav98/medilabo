@@ -1,6 +1,4 @@
 volumes:
-  mongo-data:
-  mysql-data:
   note-data:
   patient-data:
 
@@ -75,7 +73,9 @@ services:
     restart: on-failure
 
   notes:
-    build: ./medilabo-notes
+    build:
+      context: ./medilabo-notes
+      dockerfile: Dockerfile
     container_name: notes
     ports:
       - '8091:8091'
@@ -96,7 +96,9 @@ services:
     restart: on-failure
 
   risk-report:
-    build: ./medilabo-risk-report
+    build:
+      context: ./medilabo-risk-report
+      dockerfile: Dockerfile
     container_name: risk-report
     ports:
       - '8094:8094'
@@ -114,7 +116,9 @@ services:
     restart: on-failure
 
   front:
-    build: ./medilabo-front
+    build:
+      context: ./medilabo-front
+      dockerfile: Dockerfile
     container_name: front
     environment:
       - eureka.client.service-url.defaultZone=http://gateway-service:8761/eureka
