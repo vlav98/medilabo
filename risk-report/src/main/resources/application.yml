@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: risk-report
+server:
+  port: 8094
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:8761/eureka
+logging:
+  level:
+    root: info
+    org:
+      hibernate: error
+      springframework:
+        web: debug

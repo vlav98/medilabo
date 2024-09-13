@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: app-config
+    config:
+      import: "optional:configserver:http://localhost:9001"
   cloud:
     config:
       server:

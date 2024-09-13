@@ -89,7 +89,7 @@ services:
 
   gateway:
     build:
-      context: ./medilabo-gateway
+      context: ./gateway
       dockerfile: Dockerfile
     container_name: gateway
     ports:
@@ -104,7 +104,7 @@ services:
 
   patients:
     build:
-      context: ./medilabo-patients
+      context: ./patients
       dockerfile: Dockerfile
     container_name: patients
     ports:
@@ -128,7 +128,7 @@ services:
 
   notes:
     build:
-      context: ./medilabo-notes
+      context: notes
       dockerfile: Dockerfile
     container_name: notes
     ports:
@@ -151,7 +151,7 @@ services:
 
   risk-report:
     build:
-      context: ./medilabo-risk-report
+      context: risk-report
       dockerfile: Dockerfile
     container_name: risk-report
     ports:
@@ -171,7 +171,7 @@ services:
 
   front:
     build:
-      context: ./medilabo-front
+      context: front
       dockerfile: Dockerfile
     container_name: front
     environment:
@@ -186,3 +186,4 @@ services:
 
 networks:
   app:
+    driver: bridge

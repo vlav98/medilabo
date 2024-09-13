@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: notes
+server:
+  port: 8091
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:8761/eureka
