@@ -5,11 +5,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.oc</groupId>
-    <artifactId>medilabosolutions</artifactId>
+    <artifactId>medilabo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>medilabo-risk-report</artifactId>
-  <name>medilabo-risk-report</name>
+  <artifactId>risk-report</artifactId>
+  <name>risk-report</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -69,12 +69,6 @@
           <configuration>
             <mainClass>com.oc.medilabo.MedilaboRiskReportApplication</mainClass>
             <layout>JAR</layout>
-            <excludes>
-              <exclude>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-              </exclude>
-            </excludes>
           </configuration>
           <executions>
             <execution>

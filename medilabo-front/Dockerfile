@@ -1,4 +1,4 @@
-FROM maven:3.8.7-openjdk-18-slim as build
+FROM maven:3.8.7-openjdk-18-slim AS build
 RUN mvn package -DskipTests
 
 FROM openjdk:21

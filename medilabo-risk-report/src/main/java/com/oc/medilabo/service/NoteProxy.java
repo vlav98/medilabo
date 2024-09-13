@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public class NoteProxy {
-    String baseURL = "http://localhost:8081/notes/";
+    String baseURL = "http://localhost:8091/notes/";
     private final RestTemplate restTemplate;
 
     public NoteProxy(RestTemplate restTemplate) {

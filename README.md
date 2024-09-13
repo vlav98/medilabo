@@ -33,6 +33,10 @@ By leveraging cutting-edge technology and advanced algorithms, we will provide h
 
 ### Run the app
 
+#### Set KEYCLOAK ADMIN PASSWORD
+
+To set the KEYCLOAK ADMIN PASSWORD you have to put : `export KEYCLOAK_ADMIN_PASSWORD=admin`
+
 To start the app, you can use : `docker compose up --build -d`
 
 To stop the app, you can use: `docker compose down`

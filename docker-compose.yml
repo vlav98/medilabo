@@ -4,13 +4,15 @@ volumes:
 
 services:
   keycloak:
-    container_name: baeldung-keycloak.openid-provider
+    container_name: keycloak
     image: quay.io/keycloak/keycloak:25.0.1
     command:
       - start-dev
       - --import-realm
     ports:
       - 8080:8080
+    networks:
+      - app
     volumes:
       - ./keycloak/:/opt/keycloak/data/import/
     environment:
@@ -46,7 +48,6 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
-      start_period: 10s
 
   mysqldb:
     image: mysql:8.0.32
@@ -66,19 +67,40 @@ services:
     networks:
       - app
 
-  gateway:
-    build: ./medilabo-gateway
-    container_name: gateway-service
+  eureka-server:
+    build:
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    container_name: eureka-server
     ports:
       - "8761:8761"
     networks:
       - app
-    healthcheck:
-      test: "curl --fail --silent  http://localhost:8761/actuator/health | grep 'UP' || exit 1"
-      interval: 10s
-      timeout: 10s
-      start_period: 10s
-      retries: 5
+
+  app-config:
+    build:
+      context: ./app-config
+      dockerfile: Dockerfile
+    container_name: app-config
+    ports:
+      - "9001:9001"
+    networks:
+      - app
+
+  gateway:
+    build:
+      context: ./medilabo-gateway
+      dockerfile: Dockerfile
+    container_name: gateway
+    ports:
+      - "9000:9000"
+    networks:
+      - app
+    depends_on:
+      eureka-server:
+        condition: service_started
+      app-config:
+        condition: service_started
 
   patients:
     build:
@@ -92,7 +114,7 @@ services:
       - SPRING_DATASOURCE_URL=${MYSQL_DATASOURCE_URL}
       - SPRING_DATASOURCE_USERNAME=${MYSQL_DATASOURCE_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${MYSQL_DATASOURCE_PASSWORD}
-      - eureka.client.service-url.defaultZone=http://gateway-service:8761/eureka
+      - eureka.client.service-url.defaultZone=http://localhost:8761/eureka
     depends_on:
       mysqldb:
         condition: service_started
@@ -120,7 +142,7 @@ services:
       - "SPRING_DATA_MONGODB_DATABASE=medilabo"
       - "SPRING_DATA_MONGODB_PORT=27017"
       - "SPRING_DATASOURCE_URL=${MONGO_DATASOURCE_URL}"
-      - eureka.client.service-url.defaultZone=http://gateway-service:8761/eureka
+      - eureka.client.service-url.defaultZone=http://localhost:8761/eureka
     volumes:
       - note-data:/data/db
     networks:
@@ -135,7 +157,7 @@ services:
     ports:
       - '8094:8094'
     environment:
-      - eureka.client.service-url.defaultZone=http://gateway-service:8761/eureka
+      - eureka.client.service-url.defaultZone=http://localhost:8761/eureka
     depends_on:
       patients:
         condition: service_started
@@ -153,7 +175,7 @@ services:
       dockerfile: Dockerfile
     container_name: front
     environment:
-      - eureka.client.service-url.defaultZone=http://gateway-service:8761/eureka
+      - eureka.client.service-url.defaultZone=http://localhost:8761/eureka
     ports:
       - '8082:8082'
     depends_on:

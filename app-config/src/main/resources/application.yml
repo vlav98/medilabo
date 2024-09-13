@@ -1,0 +1,21 @@
+server:
+  port: 9001
+spring:
+  application:
+    name: app-config
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/vlav98/medilabo-config
+          default-label: main
+          clone-on-start: true
+          search-paths: configurations
+#eureka:
+#  instance:
+#    hostname: localhost
+#    lease-expiration-duration-in-seconds: 30
+#    lease-renewal-interval-in-seconds: 10
+#  client:
+#    serviceUrl:
+#      defaultZone: http://${eureka.instance.hostname}:8761/eureka/

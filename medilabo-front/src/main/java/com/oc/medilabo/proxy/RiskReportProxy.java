@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.math.BigInteger;
 
-@FeignClient(name = "medilabo-risk-report", url = "${gateway.url}" + "/risk-report")
+@FeignClient(name = "risk-report", url = "${gateway.url}" + "/risk-report")
 public interface RiskReportProxy {
     @GetMapping("/{id}")
     RiskLevel getPatientRiskLevel(@PathVariable BigInteger id);

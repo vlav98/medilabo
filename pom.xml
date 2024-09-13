@@ -8,7 +8,7 @@
     <relativePath/>
   </parent>
   <groupId>com.oc</groupId>
-  <artifactId>medilabosolutions</artifactId>
+  <artifactId>medilabo</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>medilabosolutions</name>
   <description>Demo project for Spring Boot</description>
@@ -22,6 +22,8 @@
     <module>medilabo-front</module>
     <module>medilabo-gateway</module>
     <module>medilabo-risk-report</module>
+    <module>eureka-server</module>
+    <module>app-config</module>
   </modules>
   	
   <dependencyManagement>
