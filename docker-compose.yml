@@ -68,19 +68,21 @@ services:
       - app
 
   eureka-server:
-    build:
-      context: ./eureka-server
-      dockerfile: Dockerfile
+    build: ./eureka-server
     container_name: eureka-server
     ports:
       - "8761:8761"
     networks:
       - app
+    healthcheck:
+      test: "curl --fail --silent  http://localhost:8761/actuator/health | grep 'UP' || exit 1"
+      interval: 10s
+      timeout: 10s
+      start_period: 10s
+      retries: 5
 
   app-config:
-    build:
-      context: ./app-config
-      dockerfile: Dockerfile
+    build: ./app-config
     container_name: app-config
     ports:
       - "9001:9001"
@@ -88,9 +90,7 @@ services:
       - app
 
   gateway:
-    build:
-      context: ./gateway
-      dockerfile: Dockerfile
+    build: ./gateway
     container_name: gateway
     ports:
       - "9000:9000"
@@ -103,9 +103,7 @@ services:
         condition: service_started
 
   patients:
-    build:
-      context: ./patients
-      dockerfile: Dockerfile
+    build: ./patients
     container_name: patients
     ports:
       - '8090:8090'
@@ -114,7 +112,7 @@ services:
       - SPRING_DATASOURCE_URL=${MYSQL_DATASOURCE_URL}
       - SPRING_DATASOURCE_USERNAME=${MYSQL_DATASOURCE_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${MYSQL_DATASOURCE_PASSWORD}
-      - eureka.client.service-url.defaultZone=http://localhost:8761/eureka
+      - eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
     depends_on:
       mysqldb:
         condition: service_started
@@ -127,9 +125,7 @@ services:
     restart: on-failure
 
   notes:
-    build:
-      context: notes
-      dockerfile: Dockerfile
+    build: notes
     container_name: notes
     ports:
       - '8091:8091'
@@ -142,7 +138,7 @@ services:
       - "SPRING_DATA_MONGODB_DATABASE=medilabo"
       - "SPRING_DATA_MONGODB_PORT=27017"
       - "SPRING_DATASOURCE_URL=${MONGO_DATASOURCE_URL}"
-      - eureka.client.service-url.defaultZone=http://localhost:8761/eureka
+      - eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
     volumes:
       - note-data:/data/db
     networks:
@@ -150,14 +146,12 @@ services:
     restart: on-failure
 
   risk-report:
-    build:
-      context: risk-report
-      dockerfile: Dockerfile
+    build: risk-report
     container_name: risk-report
     ports:
       - '8094:8094'
     environment:
-      - eureka.client.service-url.defaultZone=http://localhost:8761/eureka
+      - eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
     depends_on:
       patients:
         condition: service_started
@@ -175,7 +169,7 @@ services:
       dockerfile: Dockerfile
     container_name: front
     environment:
-      - eureka.client.service-url.defaultZone=http://localhost:8761/eureka
+      - eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
     ports:
       - '8082:8082'
     depends_on:

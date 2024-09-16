@@ -3,36 +3,47 @@ server:
 spring:
   application:
     name: gateway
-  cloud:
-    gateway:
-      routes:
-        - id: patients
-          uri: http://patients:8090
-          predicates:
-            - Path=/patients/**
-        - id: notes
-          uri: http://notes:8091
-          predicates:
-            - Path=/notes/**
-        - id: risk-report
-          uri: http://risk-report:8094
-          predicates:
-            - Path=/risk-report/**
-    config:
-      uri: http://localhost:9001
-      enabled: true
-      label: main
+  main:
+    web-application-type: reactive
+  #  cloud:
+#    gateway:
+#      discovery:
+#        locator:
+#          enabled: false
+#          lower-case-service-id: true
+  #      routes:
+#        - id: patients
+#          uri: http://patients:8090
+#          predicates:
+#            - Path=/patients/**
+#        - id: notes
+#          uri: http://notes:8091
+#          predicates:
+#            - Path=/notes/**
+#        - id: risk-report
+#          uri: http://risk-report:8094
+#          predicates:
+#            - Path=/risk-report/**
+#    config:
+#      uri: http://localhost:9001
+#      enabled: true
+#      label: main
+#      discovery:
+#        service-id: gateway
+#        enabled: true
   config:
     import: optional:configserver:https://github.com/vlav98/medilabo-config
-logging:
-  level:
-    root: debug
+
 eureka:
   instance:
     hostname: localhost
-    prefer-ip-address: true
   client:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:8761/eureka
+      defaultZone: http://localhost:8761/eureka/
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+    com.netflix.eureka: INFO

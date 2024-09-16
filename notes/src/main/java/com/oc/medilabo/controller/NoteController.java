@@ -16,7 +16,6 @@ import java.util.List;
 @RequestMapping("/notes")
 public class NoteController {
     private final Logger logger = LoggerFactory.getLogger(NoteController.class);
-
     @Autowired
     private NoteService noteService;
 

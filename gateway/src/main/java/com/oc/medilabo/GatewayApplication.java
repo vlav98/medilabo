@@ -1,4 +1,4 @@
-package com.oc.medilabo.medilabo_gateway;
+package com.oc.medilabo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
