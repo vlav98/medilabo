@@ -11,15 +11,15 @@ spring:
           lower-case-service-id: true
       routes:
       - id: patients
-        uri: http://${IPADDRESS:localhost}:8090
+        uri: http://192.168.1.95:8090
         predicates:
           - Path=/patients/**
       - id: notes
-        uri: http://${IPADDRESS:localhost}:8091
+        uri: http://192.168.1.95:8091
         predicates:
           - Path=/notes/**
       - id: risk-report
-        uri: http://${IPADDRESS:localhost}:8094
+        uri: http://192.168.1.95:8094
         predicates:
           - Path=/risk-report/**
   config:
@@ -27,12 +27,12 @@ spring:
 
 eureka:
   instance:
-    hostname: ${IPADDRESS:localhost}
+    hostname: 192.168.1.95
   client:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://${IPADDRESS:localhost}:8761/eureka/
+      defaultZone: http://192.168.1.95:8761/eureka/
 
 logging:
   level:

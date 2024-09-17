@@ -7,7 +7,7 @@ eureka:
     prefer-ip-address: true
   client:
     service-url:
-      defaultZone: ${EUREKA_URI:http://${eureka.instance.hostname}:8761/eureka/}
+      defaultZone: http://${eureka.instance.hostname}:8761/eureka/
     fetch-registry: true
     register-with-eureka: true
 
@@ -27,4 +27,4 @@ spring:
     generate-ddl: true
     show-sql: true
   config:
-    import: optional:configserver:http://${IPADDRESS:localhost}:9001
+    import: optional:configserver:http://192.168.1.95:9001

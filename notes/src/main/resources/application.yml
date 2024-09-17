@@ -7,7 +7,7 @@ eureka:
     prefer-ip-address: true
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:http://${eureka.instance.hostname}:8761/eureka/}
+      defaultZone: http://192.168.1.95:8761/eureka/
     registerWithEureka: true
     fetchRegistry: true
 
@@ -15,19 +15,13 @@ spring:
   application:
     name: notes
   datasource:
-    url: mongodb://${MONGO_USER}:${MONGO_PWD}@mongodb:27017/${MONGO_DB}
-    username: ${MONGO_USER}
-    password: ${MONGO_PWD}
-#server.port=8091
-#eureka.instance.hostname=notes
-#spring.application.name=notes
-#
-#spring.datasource.url=mongodb://${IPADDRESS:localhost}:27017/medilabo
-#spring.data.mongodb.host=${IPADDRESS:localhost}
-#spring.data.mongodb.port=27017
-#spring.data.mongodb.database=medilabo
-#
-#eureka.instance.prefer-ip-address=true
-#eureka.client.service-url.defaultZone=http://${IPADDRESS:localhost}:8761/eureka
-#eureka.client.fetch-registry= true
-#eureka.client.register-with-eureka= true
+    url: mongodb://root:example@mongodb:27017/admin
+    username: root
+    password: example
+  data:
+    mongodb:
+      database: medilabo
+      host: 192.168.1.95
+      port: 27017
+      username: root
+      password: example

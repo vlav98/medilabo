@@ -25,7 +25,7 @@ public class NoteService {
     }
 
     public Note addNewNote(Note note) {
-        note.setCreatedAt(LocalDate.now());
+        note.setCreatedAt(LocalDate.now().atStartOfDay().toString());
         return noteRepository.save(note);
     }
 
@@ -42,3 +42,4 @@ public class NoteService {
         return symptoms;
     }
 }
+

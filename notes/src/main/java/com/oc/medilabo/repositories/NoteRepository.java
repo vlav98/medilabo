@@ -9,7 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 @Repository
-public interface NoteRepository extends MongoRepository<Note, BigInteger> {
+public interface NoteRepository extends MongoRepository<Note, String> {
     List<Note> findAllByPatientIdOrderByCreatedAt(BigInteger patientId);
 
     @Query(value = "{'patientId': ?0, 'content': {$regex: ?1, $options: 'i'}}")

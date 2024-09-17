@@ -40,11 +40,15 @@ services:
     ports:
       - '27017:27017'
     env_file: ./.env
+    command:
+      - --storageEngine
+      - wiredTiger
+      - --auth
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PWD}
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
       - MONGO_INITDB_DATABASE=${MONGO_DB}
-      - ME_CONFIG_MONGODB_URL=mongodb://${MONGO_USER}:${MONGO_PWD}@mongodb:27017/${MONGO_DB}
+      - "ME_CONFIG_MONGODB_URL=mongodb://root:example@mongodb:27017/${MONGO_DB}"
     networks:
       - app
     volumes:
@@ -63,8 +67,8 @@ services:
     env_file: ./.env
     environment:
       - MYSQL_DATABASE=medilabo
+      - MYSQL_ROOT_HOSTS=%
       - MYSQL_ROOT_PASSWORD=${MYSQL_DATASOURCE_PASSWORD}
-      - MYSQL_USER=root
       - MYSQL_PASSWORD=${MYSQL_DATASOURCE_PASSWORD}
     ports:
       - 3307:3306
@@ -144,10 +148,9 @@ services:
       gateway:
         condition: service_started
     environment:
-      - "SPRING_DATA_MONGODB_DATABASE=medilabo"
-      - "SPRING_DATASOURCE_URL=mongodb://mongodb:27017/medilabo"
+      - SPRING_DATA_MONGODB_DATABASE=medilabo
+      - SPRING_DATASOURCE_URL=mongodb://root:example@mongodb:27017/${MONGO_DB}
       - eureka.client.service-url.defaultZone=http://${IPADDRESS}:8761/eureka/
-      - ME_CONFIG_BASICAUTH=false
     networks:
       - app
     restart: on-failure

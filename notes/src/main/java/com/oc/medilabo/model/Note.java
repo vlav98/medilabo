@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.math.BigInteger;
-import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -16,11 +15,11 @@ import java.time.LocalDate;
 public class Note {
     @Id
     @Indexed(unique = true)
-    private BigInteger noteId;
+    private String noteId;
     @Field("patientId")
     @Indexed(unique = true)
     private BigInteger patientId;
     private String patient;
     private String content;
-    private LocalDate createdAt;
+    private String createdAt;
 }

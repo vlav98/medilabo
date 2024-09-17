@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public class NoteProxy {
-    String baseURL = System.getenv("BASE_URL") + "notes/";
+    String baseURL = "http://192.168.1.95:8090/notes/";
     private final RestTemplate restTemplate;
 
     public NoteProxy(RestTemplate restTemplate) {

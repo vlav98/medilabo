@@ -5,15 +5,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigInteger;
-import java.time.LocalDate;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class Note {
-    private BigInteger noteId;
+    private String noteId;
     private BigInteger patientId;
     private String patient;
     private String content;
-    private LocalDate createdAt;
+    private String createdAt;
 }

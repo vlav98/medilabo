@@ -10,11 +10,11 @@ public class GatewayRoutesConfig {
     @Bean
     public RouteLocator gatewayRoutes(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("patients", route -> route.path("/api/v1/patients/**")
+                .route("patients", route -> route.path("/patients/**")
                         .uri("lb://patients"))
-                .route("notes", route -> route.path("/api/v1/notes/**")
+                .route("notes", route -> route.path("/notes/**")
                         .uri("lb://notes"))
-                .route("risk-report", route -> route.path("/api/v1/risk-report/**")
+                .route("risk-report", route -> route.path("/risk-report/**")
                         .uri("lb://risk-report"))
                 .build();
     }
