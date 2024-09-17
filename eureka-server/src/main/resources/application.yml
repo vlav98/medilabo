@@ -1,0 +1,22 @@
+server:
+  port: 8761
+#spring:
+#  application:
+#    name: eureka-server
+eureka:
+  instance:
+    hostname: 192.168.1.95
+    non-secure-port-enabled: true
+    non-secure-port: 80
+    homePageUrl: http://${eureka.instance.hostname}/
+    statusPageUrl: http://${eureka.instance.hostname}/actuator/info/
+    healthCheckUrl: http://${eureka.instance.hostname}/actuator/health/
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+debug: true
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.hibernate: ERROR
+    com.netflix.eureka: INFO

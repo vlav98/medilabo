@@ -1,0 +1,27 @@
+server:
+  port: 8091
+
+eureka:
+  instance:
+    hostname: notes
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.1.95:8761/eureka/
+    registerWithEureka: true
+    fetchRegistry: true
+
+spring:
+  application:
+    name: notes
+  datasource:
+    url: mongodb://root:example@mongodb:27017/admin
+    username: root
+    password: example
+  data:
+    mongodb:
+      database: medilabo
+      host: 192.168.1.95
+      port: 27017
+      username: root
+      password: example

@@ -1,0 +1,193 @@
+volumes:
+  note-data:
+  patient-data:
+
+services:
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:25.0.1
+    command:
+      - start-dev
+      - --import-realm
+    ports:
+      - 8080:8080
+    networks:
+      - app
+    volumes:
+      - ./keycloak/:/opt/keycloak/data/import/
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_HTTP_PORT: 8080
+      KC_HOSTNAME_URL: http://${IPADDRESS}:8080
+      KC_HOSTNAME_ADMIN_URL: http://${IPADDRESS}:8080
+      KC_HOSTNAME_STRICT_BACKCHANNEL: true
+      KC_HTTP_RELATIVE_PATH: /
+      KC_HTTP_ENABLED: true
+      KC_HEALTH_ENABLED: true
+      KC_METRICS_ENABLED: true
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: [ 'CMD-SHELL', '[ -f /tmp/HealthCheck.java ] || echo "public class HealthCheck { public static void main(String[] args) throws java.lang.Throwable { System.exit(java.net.HttpURLConnection.HTTP_OK == ((java.net.HttpURLConnection)new java.net.URL(args[0]).openConnection()).getResponseCode() ? 0 : 1); } }" > /tmp/HealthCheck.java && java /tmp/HealthCheck.java http://${IPADDRESS}:8080/auth/health/live' ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - '27017:27017'
+    env_file: ./.env
+    command:
+      - --storageEngine
+      - wiredTiger
+      - --auth
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+      - MONGO_INITDB_DATABASE=${MONGO_DB}
+      - "ME_CONFIG_MONGODB_URL=mongodb://root:example@mongodb:27017/${MONGO_DB}"
+    networks:
+      - app
+    volumes:
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - note-data:/data/db
+    healthcheck:
+      test: "mongosh --eval 'db.runCommand(\"ping\").ok' ${IPADDRESS}:27017 --quiet || exit 1"
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  mysqldb:
+    image: mysql:8.0.32
+    restart: always
+    container_name: mysqldb
+    env_file: ./.env
+    environment:
+      - MYSQL_DATABASE=medilabo
+      - MYSQL_ROOT_HOSTS=%
+      - MYSQL_ROOT_PASSWORD=${MYSQL_DATASOURCE_PASSWORD}
+      - MYSQL_PASSWORD=${MYSQL_DATASOURCE_PASSWORD}
+    ports:
+      - 3307:3306
+    volumes:
+      - patient-data:/var/lib/mysql
+      - ./mysql:/docker-entrypoint-initdb.d
+    networks:
+      - app
+
+  eureka-server:
+    build: ./eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - app
+    healthcheck:
+      test: "curl --fail --silent  http://${IPADDRESS}:8761/actuator/health | grep 'UP' || exit 1"
+      interval: 10s
+      timeout: 10s
+      start_period: 10s
+      retries: 5
+
+  app-config:
+    build: ./app-config
+    container_name: app-config
+    environment:
+      - IPADDRESS=${IPADDRESS}
+    ports:
+      - "9001:9001"
+    networks:
+      - app
+
+  gateway:
+    build: ./gateway
+    container_name: gateway
+    ports:
+      - "9000:9000"
+    networks:
+      - app
+    depends_on:
+      eureka-server:
+        condition: service_started
+      app-config:
+        condition: service_started
+
+  patients:
+    build: ./patients
+    container_name: patients
+    ports:
+      - '8090:8090'
+    env_file: ./.env
+    environment:
+      - SPRING_DATASOURCE_URL=${MYSQL_DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_DATASOURCE_PASSWORD}
+      - eureka.client.service-url.defaultZone=http://${IPADDRESS}:8761/eureka/
+    depends_on:
+      mysqldb:
+        condition: service_started
+      gateway:
+        condition: service_started
+    volumes:
+      - patient-data:/var/lib/mysql
+    networks:
+      - app
+    restart: on-failure
+
+  notes:
+    build: notes
+    container_name: notes
+    ports:
+      - '8091:8091'
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      gateway:
+        condition: service_started
+    environment:
+      - SPRING_DATA_MONGODB_DATABASE=medilabo
+      - SPRING_DATASOURCE_URL=mongodb://root:example@mongodb:27017/${MONGO_DB}
+      - eureka.client.service-url.defaultZone=http://${IPADDRESS}:8761/eureka/
+    networks:
+      - app
+    restart: on-failure
+
+  risk-report:
+    build: risk-report
+    container_name: risk-report
+    ports:
+      - '8094:8094'
+    environment:
+      - eureka.client.service-url.defaultZone=http://${IPADDRESS}:8761/eureka/
+    depends_on:
+      patients:
+        condition: service_started
+      notes:
+        condition: service_started
+      gateway:
+        condition: service_started
+    networks:
+      - app
+    restart: on-failure
+
+  front:
+    build:
+      context: front
+      dockerfile: Dockerfile
+    container_name: front
+    environment:
+      - eureka.client.service-url.defaultZone=http://${IPADDRESS}:8761/eureka/
+    ports:
+      - '8082:8082'
+    depends_on:
+      - gateway
+    networks:
+      - app
+    restart: on-failure
+
+networks:
+  app:
+    driver: bridge
