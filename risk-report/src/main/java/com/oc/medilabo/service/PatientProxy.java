@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 public class PatientProxy {
     private static final Logger logger = LogManager.getLogger(PatientProxy.class);
-    String baseURL = "http://localhost:8090/patients/";
+    String baseURL = System.getenv("BASE_URL") + "patients/";
 
     private final RestTemplate restTemplate;
 
@@ -37,3 +37,5 @@ public class PatientProxy {
         }
     }
 }
+
+

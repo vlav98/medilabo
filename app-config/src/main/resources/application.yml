@@ -4,7 +4,7 @@ spring:
   application:
     name: app-config
     config:
-      import: "optional:configserver:http://localhost:9001"
+      import: "optional:configserver:http://${IPADDRESS:localhost}:9001"
   cloud:
     config:
       server:
@@ -13,11 +13,14 @@ spring:
           default-label: main
           clone-on-start: true
           search-paths: configurations
-#eureka:
-#  instance:
-#    hostname: localhost
-#    lease-expiration-duration-in-seconds: 30
-#    lease-renewal-interval-in-seconds: 10
-#  client:
-#    serviceUrl:
-#      defaultZone: http://${eureka.instance.hostname}:8761/eureka
+eureka:
+  instance:
+    hostname: app-config
+    prefer-ip-address: true
+    lease-expiration-duration-in-seconds: 30
+    lease-renewal-interval-in-seconds: 10
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:8761/eureka

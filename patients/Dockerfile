@@ -5,6 +5,6 @@ FROM openjdk:22-jdk
 VOLUME /tmp
 COPY target/patients-0.0.1-SNAPSHOT.jar /patients.jar
 COPY src/main/resources/application.yml .
-RUN sed -i 's/localhost/host.docker.internal/g' application.yml
+RUN sed -i 's/${IPADDRESS:localhost}/host.docker.internal/g' application.yml
 EXPOSE 8090
 ENTRYPOINT ["java", "-jar", "/patients.jar"]

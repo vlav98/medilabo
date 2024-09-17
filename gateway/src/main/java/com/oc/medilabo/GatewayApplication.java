@@ -1,7 +1,5 @@
 package com.oc.medilabo;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -17,8 +15,6 @@ import java.util.List;
 @SpringBootApplication
 @EnableDiscoveryClient
 public class GatewayApplication {
-	private static final Logger LOGGER = LoggerFactory.getLogger(GatewayApplication.class);
-
 	@Autowired
 	RouteDefinitionLocator locator;
 

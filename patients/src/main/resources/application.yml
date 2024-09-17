@@ -27,6 +27,4 @@ spring:
     generate-ddl: true
     show-sql: true
   config:
-    import: optional:configserver:http://localhost:9001
-  main:
-    web-application-type: reactive
+    import: optional:configserver:http://${IPADDRESS:localhost}:9001
