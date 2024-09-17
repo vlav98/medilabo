@@ -45,5 +45,13 @@ To stop the app, you can use: `docker compose down`
 
 ### Credentials
 
+
 ### Green Code
 
+Green code is a software development approach that focuses on minimizing the environmental impact of computer applications throughout their lifecycle. It involves writing code in a way that reduces energy consumption, optimizes resource usage, and limits the impact on the environment.
+
+#### Key aspects of green code:
+
+- **Resource optimization**: Writing concise and efficient code to reduce unnecessary calculations and memory usage, choosing optimized algorithms, and minimizing database or external service calls.
+- **Energy impact**: Selecting energy-efficient programming languages, frameworks, and infrastructure, optimizing server configuration, and using renewable energy sources for data centers.
+- **Carbon footprint reduction**: Choosing eco-responsible hosting providers, developing long-lasting and maintainable software, and reducing the energy consumption of user devices.
