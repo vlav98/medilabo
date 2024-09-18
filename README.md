@@ -45,6 +45,9 @@ To stop the app, you can use: `docker compose down`
 
 ### Credentials
 
+To connect to the app:
+- Username : `user`
+- Password : `password`
 
 ### Green Code
 
