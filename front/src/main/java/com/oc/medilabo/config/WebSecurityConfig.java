@@ -22,9 +22,9 @@ public class WebSecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(
-            (req) ->
-                req.requestMatchers("/*").authenticated()
+            (req) -> req.requestMatchers("/*").authenticated()
                 .requestMatchers("/patients/**").authenticated()
+                .requestMatchers("/notes/**").authenticated()
                 .requestMatchers("/login/*").permitAll()
         ).formLogin(
             form -> form.loginPage("/login")

@@ -15,9 +15,9 @@
 
     <div class="card">
         <div class="card-body">
-            <h3 class="mb-3" th:text="#{patient.update_patient_title}"></h3>
+            <h3 class="mb-3" th:text="#{patient.update_patient_title(${#strings.concat(patient.firstName, ' ', patient.lastName)})}"></h3>
             <form method="post"
-                  th:action="@{/patient/update/{id}(id=${patient.patientId})}"
+                  th:action="@{/patients/update/{id}(id=${patient.patientId})}"
                   th:object="${patient}"
                   class="form-horizontal">
                 <div class="row">
